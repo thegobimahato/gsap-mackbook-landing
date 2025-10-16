@@ -1,13 +1,15 @@
-import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import clsx from "clsx";
+import { useMediaQuery } from "react-responsive";
 
 import useMacbookStore from "../store";
-import MacbookModel14 from "./modals/Macbook-14";
-import StudioLights from "./three/StudioLights";
+import ModelSwitcher from "./three/ModelSwitcher.jsx";
+import StudioLights from "./three/StudioLights.jsx";
 
 const ProductViewer = () => {
   const { color, scale, setColor, setScale } = useMacbookStore();
+
+  const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
 
   return (
     <section id="product-viewer">
@@ -27,7 +29,6 @@ const ProductViewer = () => {
                 color === "#adb5bd" && "active",
               )}
             />
-
             <div
               onClick={() => setColor("#2e2c2e")}
               className={clsx(
@@ -48,7 +49,6 @@ const ProductViewer = () => {
             >
               <p>14"</p>
             </div>
-
             <div
               onClick={() => setScale(0.08)}
               className={clsx(
@@ -69,9 +69,10 @@ const ProductViewer = () => {
       >
         <StudioLights />
 
-        <MacbookModel14 scale={0.06} position={[0, 0, 0]} />
-
-        <OrbitControls enableZoom={false} />
+        <ModelSwitcher
+          scale={isMobile ? scale - 0.03 : scale}
+          isMobile={isMobile}
+        />
       </Canvas>
     </section>
   );
